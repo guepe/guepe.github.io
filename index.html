@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pierre-Henri Delaval · Projets</title>
+<meta name="description" content="Projets open source de Pierre-Henri Delaval : modules Odoo, thème WordPress, outils Rust, Python et PHP qui suppriment le travail répétitif.">
+<meta name="theme-color" content="#050505">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&display=swap">
+<style>
+/* Tokens Belspace, thème Écran */
+:root {
+  --void: #050505;
+  --ash: #141414;
+  --dust: #3a3a3a;
+  --haze: #7a7873;
+  --frost: #a3a09a;
+  --ivory: #e6e2d6;
+  --signal: #ffb000;
+  --signal-fill: #ffb000;
+  --on-signal: #050505;
+  --selection: var(--signal-fill);
+  --font-pixel: "VT323", "Courier New", monospace;
+  --space-1: 8px; --space-2: 16px; --space-3: 32px; --space-4: 64px; --space-5: 128px;
+  --tracking-d0: 0em; --tracking-d1: .04em; --tracking-d2: .12em;
+  color-scheme: dark;
+}
+/* Thème Papier, à l'impression */
+@media print {
+  :root {
+    --void: #efebe0; --ash: #e4dfd2; --dust: #c9c5bb; --haze: #6b6963;
+    --frost: #55534e; --ivory: #0d0d0d; --signal: #7a5000; --on-signal: #0d0d0d;
+  }
+  .bs-dust { display: none; }
+}
+
+html, body { margin: 0; }
+body {
+  background: var(--void);
+  color: var(--ivory);
+  font-family: var(--font-pixel);
+  font-size: 24px;
+  line-height: 32px;
+  -webkit-font-smoothing: none;
+}
+::selection { background: var(--selection); color: var(--on-signal); }
+a { color: inherit; text-decoration: none; }
+
+.page { position: relative; min-height: 100vh; overflow-x: hidden; }
+.bs-dust { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+.page > :not(.bs-dust) { position: relative; z-index: 1; }
+.gutter { padding-inline: max(16px, 4.5vw); }
+
+/* Profondeurs */
+.d0 { color: var(--ivory); letter-spacing: var(--tracking-d0); }
+.d1 { color: var(--frost); letter-spacing: var(--tracking-d1); }
+.d2 { color: var(--haze); letter-spacing: var(--tracking-d2); }
+.bs-label { margin: 0; font: inherit; text-transform: uppercase; letter-spacing: .18em; color: var(--haze); }
+
+/* Navigation */
+header { padding-block: 40px; }
+.bs-nav { display: flex; flex-wrap: wrap; gap: var(--space-1) clamp(16px, 3vw, 64px); align-items: baseline; }
+.bs-nav .brand { margin-right: auto; color: var(--ivory); padding: 0; }
+.bs-nav a { color: var(--frost); letter-spacing: var(--tracking-d1); padding: 0 var(--space-1); }
+.bs-nav a.brand { color: var(--ivory); letter-spacing: var(--tracking-d0); padding: 0; }
+.bs-nav a:hover, .bs-nav a:focus-visible { outline: none; color: var(--void); background: var(--ivory); }
+.bs-nav a[aria-current="page"] { color: var(--signal); }
+.bs-nav a[aria-current="page"]::before { content: "> "; }
+@media (max-width: 600px) {
+  .bs-nav { display: grid; grid-template-columns: repeat(3, max-content); column-gap: var(--space-3); }
+  .bs-nav .brand { grid-column: 1 / -1; margin-bottom: var(--space-1); }
+}
+
+/* Phrase d'écran et curseur */
+.bs-display {
+  margin: 0; font-family: var(--font-pixel); font-weight: 400;
+  font-size: 120px; line-height: 108px; letter-spacing: -.01em;
+  color: var(--ivory); text-wrap: balance;
+}
+@media (max-width: 720px) { .bs-display { font-size: 64px; line-height: 60px; } }
+.bs-caret {
+  display: inline-block; width: .5em; height: .8em; margin-left: .12em; vertical-align: -.06em;
+  background: var(--signal-fill); animation: bs-blink 1.06s steps(1) infinite;
+}
+@keyframes bs-blink { 50% { opacity: 0; } }
+
+/* Actions */
+.bs-action {
+  display: inline-flex; gap: var(--space-1); align-items: baseline;
+  padding: 0 var(--space-1); margin-left: calc(-1 * var(--space-1));
+  color: var(--signal); letter-spacing: var(--tracking-d0);
+}
+.bs-action::before { content: ">"; }
+.bs-action:hover, .bs-action:focus-visible { outline: none; background: var(--signal-fill); color: var(--on-signal); }
+.bs-action:active { background: var(--ivory); color: var(--void); }
+.bs-action.is-quiet { color: var(--frost); }
+.bs-action.is-quiet:hover, .bs-action.is-quiet:focus-visible { background: var(--ivory); color: var(--void); }
+
+/* Accueil */
+.hero { min-height: 640px; display: flex; flex-direction: column; justify-content: space-between; }
+.hero .front { padding-block: var(--space-5) 0; display: flex; flex-direction: column; gap: var(--space-3); }
+.hero .lede { margin: 0; max-width: 46ch; }
+.hero .acts { display: flex; flex-wrap: wrap; gap: var(--space-2) 48px; }
+.hero .trail { padding-block: var(--space-4) 40px; display: flex; flex-wrap: wrap; gap: var(--space-1) 48px; }
+
+section { padding-block: 96px 0; display: flex; flex-direction: column; gap: var(--space-3); }
+
+/* Projets : des lignes de profondeur, sans cartes */
+.bs-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 48px; }
+.bs-list > li { display: grid; grid-template-columns: 1.25em 1fr; column-gap: var(--space-1); row-gap: var(--space-1); }
+.bs-list > li::before { content: ">"; color: var(--haze); grid-row: 1; }
+.bs-list > li:hover::before { color: var(--signal); }
+.bs-list .t { grid-column: 2; color: var(--ivory); justify-self: start; }
+.bs-list a.t { padding: 0 var(--space-1); margin-left: calc(-1 * var(--space-1)); }
+.bs-list a.t:hover, .bs-list a.t:focus-visible { outline: none; background: var(--ivory); color: var(--void); }
+.bs-list .d { grid-column: 2; max-width: 58ch; margin: 0; }
+.bs-list .m { grid-column: 2; display: flex; flex-wrap: wrap; gap: 0 var(--space-3); align-items: baseline; }
+@media (min-width: 1000px) {
+  .bs-list > li { grid-template-columns: 1.25em minmax(0, 28ch) minmax(0, 58ch); }
+  .bs-list .t { grid-column: 2; grid-row: 1; }
+  .bs-list .d { grid-column: 3; grid-row: 1; }
+  .bs-list .m { grid-column: 3; }
+}
+
+/* Forks : lignes compactes */
+.forks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+.forks li { display: grid; grid-template-columns: minmax(0, 18ch) 1fr; column-gap: var(--space-3); }
+.forks a { justify-self: start; padding: 0 var(--space-1); margin-left: calc(-1 * var(--space-1)); color: var(--frost); letter-spacing: var(--tracking-d1); }
+.forks a:hover, .forks a:focus-visible { outline: none; background: var(--ivory); color: var(--void); }
+@media (max-width: 720px) { .forks li { grid-template-columns: 1fr; } }
+
+.say { margin: 0; font: inherit; font-size: 64px; line-height: 60px; color: var(--ivory); text-wrap: balance; }
+.contact { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-3) var(--space-4); align-items: end; }
+.contact .acts { display: flex; flex-direction: column; gap: var(--space-2); align-items: flex-start; }
+@media (max-width: 900px) {
+  .contact { grid-template-columns: 1fr; }
+  .hero { min-height: 0; }
+  .hero .front { padding-block: var(--space-4) 0; }
+}
+
+footer { padding-block: var(--space-5) 40px; display: flex; flex-wrap: wrap; gap: var(--space-1) 48px; }
+
+@media (prefers-reduced-motion: reduce) { .bs-caret { animation: none; } }
+</style>
+</head>
+<body>
+<div class="page">
+<canvas class="bs-dust" id="dust" aria-hidden="true"></canvas>
+
+<header class="gutter">
+  <nav class="bs-nav" aria-label="Principale">
+    <a class="brand" href="#">pierre-henri delaval</a>
+    <a href="#" aria-current="page">accueil</a>
+    <a href="#projets">projets</a>
+    <a href="#odoo-apps">odoo apps</a>
+    <a href="#forks">forks</a>
+    <a href="https://github.com/guepe">github</a>
+  </nav>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="front gutter">
+      <h1 class="bs-display">Des outils qui servent.<span class="bs-caret" aria-hidden="true"></span></h1>
+      <p class="lede d1">Je transforme des besoins concrets en outils sobres et maintenables : modules Odoo, sites pour des associations, petits utilitaires qui suppriment le travail répétitif.</p>
+      <div class="acts">
+        <a class="bs-action" href="#projets">voir les projets</a>
+        <a class="bs-action is-quiet" href="https://github.com/guepe?tab=repositories">tous les dépôts</a>
+      </div>
+    </div>
+    <div class="trail gutter d2">
+      <span>applications métier</span><span>automatisation</span><span>outils pour bénévoles</span>
+    </div>
+  </div>
+
+  <section id="projets" class="gutter">
+    <h2 class="bs-label">Projets</h2>
+    <ul class="bs-list">
+      <li>
+        <a class="t" href="https://github.com/guepe/les-scouts-unite">Les Scouts – Unité</a>
+        <p class="d d1">Thème WordPress et son extension pour les sites d'unité Les Scouts asbl. Agenda des réunions, sections, staffs, inscriptions, documents et clan IAmA, que des animateurs bénévoles tiennent à jour sans code.</p>
+        <div class="m">
+          <span class="d2">php · wordpress</span>
+          <a class="bs-action is-quiet" href="https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/guepe/les-scouts-unite/main/playground/demo.json">essayer en ligne</a>
+        </div>
+      </li>
+      <li>
+        <a class="t" href="https://github.com/guepe/printNotion">printNotion</a>
+        <p class="d d1">Un lien Notion, un PDF A4 fidèle à Notion. Les bases de données s'impriment comme on les voit : filtres, tris, colonnes, groupes, calendriers et galeries.</p>
+        <div class="m">
+          <span class="d2">rust · typst · egui</span>
+          <a class="bs-action is-quiet" href="https://github.com/guepe/printNotion/releases/latest">télécharger pour macos</a>
+        </div>
+      </li>
+      <li>
+        <a class="t" href="https://github.com/guepe/Comics-collections">Comics Collections</a>
+        <p class="d d1">Modules Odoo 19 pour gérer une collection de BD : séries, albums, auteurs, éditeurs, wishlist, lecture et prêts. Les fiches s'enrichissent depuis Google Books, Open Library et la BnF.</p>
+        <div class="m">
+          <span class="d2">python · odoo 19 · lgpl-3</span>
+          <a class="bs-action is-quiet" href="#odoo-apps">modules pro</a>
+        </div>
+      </li>
+      <li>
+        <a class="t" href="https://github.com/guepe/bank-crm2">Bank CRM</a>
+        <p class="d d1">CRM bancaire sous Symfony 8 : comptes, contacts, leads, documents, catalogue de produits, portail client et onboarding conversationnel assisté par IA.</p>
+        <div class="m"><span class="d2">php · symfony 8</span></div>
+      </li>
+      <li>
+        <a class="t" href="https://github.com/guepe/Pompe-Recettes">Pompe Recettes</a>
+        <p class="d d1">Extrait des recettes de sites web, les normalise, les traduit en français si besoin, les convertit en Markdown et peut les envoyer dans une base Notion.</p>
+        <div class="m"><span class="d2">python · cli</span></div>
+      </li>
+      <li>
+        <a class="t" href="https://github.com/guepe/backup-s3">backup-s3</a>
+        <p class="d d1">Exporte des bases MySQL, archive des fichiers et envoie le tout vers S3, avec une rotation horaire, quotidienne ou hebdomadaire.</p>
+        <div class="m"><span class="d2">php · script</span></div>
+      </li>
+      <li>
+        <a class="t" href="https://github.com/guepe/Chooser">Chooser</a>
+        <p class="d d1">On pose un à trois doigts sur l'écran, une résonance démarre, puis l'app en choisit un. Statique, tactile, sans backend.</p>
+        <div class="m"><span class="d2">javascript · mobile</span></div>
+      </li>
+    </ul>
+  </section>
+
+  <section id="odoo-apps" class="gutter">
+    <h2 class="bs-label">Sur l'Odoo Apps Store</h2>
+    <p class="d1" style="margin:0;max-width:58ch">Les modules Pro de Comics Collections, publiés par Belspace pour Odoo 19. Ils s'ajoutent aux deux modules gratuits du dépôt GitHub.</p>
+    <ul class="bs-list">
+      <li>
+        <a class="t" href="https://apps.odoo.com/apps/modules/19.0/comic_shop">Comic Shop</a>
+        <p class="d d1">Vendre des BD en ligne et en caisse : albums synchronisés avec les produits, pages par série, auteur et éditeur, bibliothèque client sur le portail, suivi des séries et e-mails de sortie.</p>
+        <div class="m"><span class="d2">200 € · odoo 19</span></div>
+      </li>
+      <li>
+        <a class="t" href="https://apps.odoo.com/apps/modules/19.0/comic_ai">Comic AI</a>
+        <p class="d d1">L'IA au service du catalogue, avec Claude ou OpenAI : synopsis, traductions, biographies d'auteurs, histoires d'éditeurs et découverte de nouvelles séries.</p>
+        <div class="m"><span class="d2">60 € · odoo 19</span></div>
+      </li>
+      <li>
+        <a class="t" href="https://apps.odoo.com/apps/modules/19.0/comic_ai_shop">Comic AI Shop</a>
+        <p class="d d1">L'IA côté clients de la boutique : recommandations de séries sur le portail, biographies d'auteurs et histoires d'éditeurs sur le webshop.</p>
+        <div class="m"><span class="d2">300 € · odoo 19</span></div>
+      </li>
+    </ul>
+    <div><a class="bs-action is-quiet" href="https://apps.odoo.com/apps/modules/browse?search=comic">voir sur l'odoo apps store</a></div>
+  </section>
+
+  <section id="forks" class="gutter">
+    <h2 class="bs-label">Forks et socles</h2>
+    <ul class="forks">
+      <li><a href="https://github.com/guepe/template-unite">template-unite</a><span class="d2">template officiel des sites d'unité les scouts</span></li>
+      <li><a href="https://github.com/guepe/odoo">odoo</a><span class="d2">base de travail erp</span></li>
+      <li><a href="https://github.com/guepe/nihongo">nihongo</a><span class="d2">apprentissage du japonais</span></li>
+      <li><a href="https://github.com/guepe/Magallanes">Magallanes</a><span class="d2">déploiement php, historique</span></li>
+    </ul>
+  </section>
+
+  <section id="contact" class="gutter">
+    <div class="contact">
+      <h2 class="say">Le code est sur GitHub.</h2>
+      <div class="acts">
+        <a class="bs-action is-quiet" href="https://github.com/guepe">github.com/guepe</a>
+        <a class="bs-action is-quiet" href="https://github.com/guepe/guepe.github.io">source de cette page</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="gutter d2">
+  <span>pierre-henri delaval</span><span>belspace</span><span>belgique francophone</span>
+</footer>
+</div>
+
+<script>
+/* Poussière Belspace : trois rubans qui dérivent vers la gauche, immobiles si l'utilisateur réduit les animations. */
+(function () {
+  var canvas = document.getElementById('dust');
+  if (!canvas || !canvas.getContext) return;
+  var ctx = canvas.getContext('2d');
+  var css = getComputedStyle(document.documentElement);
+  function tok(n, f) { return css.getPropertyValue(n).trim() || f; }
+  var layers = [
+    { color: tok('--dust', '#3a3a3a'), alpha: 0.7, per: 0.9,  speed: 6,  size: 1, base: 0.30, amp: 0.10, freq: 1.4, spread: 0.07 },
+    { color: tok('--dust', '#3a3a3a'), alpha: 1,   per: 0.45, speed: 12, size: 2, base: 0.62, amp: 0.12, freq: 1.0, spread: 0.05 },
+    { color: tok('--haze', '#7a7873'), alpha: 0.6, per: 0.12, speed: 24, size: 2, base: 0.48, amp: 0.18, freq: 0.7, spread: 0.10 }
+  ];
+  var w = 0, h = 0, raf = 0, last = 0;
+  var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function gauss() { return (Math.random() + Math.random() + Math.random() - 1.5) / 1.5; }
+  function seed() {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = canvas.clientWidth; h = canvas.clientHeight;
+    canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    layers.forEach(function (l) {
+      var count = Math.round(w * l.per);
+      var phase = Math.random() * 6.28;
+      l.p = [];
+      for (var i = 0; i < count; i++) {
+        var x = Math.random() * w;
+        var y = h * (l.base + l.amp * Math.sin(x / w * 6.28 * l.freq + phase) + l.spread * gauss() * 2);
+        l.p.push([x, y]);
+      }
+    });
+  }
+  function draw(dt) {
+    ctx.clearRect(0, 0, w, h);
+    layers.forEach(function (l) {
+      ctx.fillStyle = l.color; ctx.globalAlpha = l.alpha;
+      for (var i = 0; i < l.p.length; i++) {
+        var p = l.p[i];
+        if (!still) { p[0] -= l.speed * dt; if (p[0] < 0) p[0] += w; }
+        ctx.fillRect(Math.round(p[0]), Math.round(p[1]), l.size, l.size);
+      }
+    });
+    ctx.globalAlpha = 1;
+  }
+  function frame(t) {
+    var dt = last ? Math.min((t - last) / 1000, 0.1) : 0; last = t;
+    draw(dt);
+    if (!still) raf = requestAnimationFrame(frame);
+  }
+  seed(); draw(0);
+  if (!still) raf = requestAnimationFrame(frame);
+  if (window.ResizeObserver) new ResizeObserver(function () { seed(); draw(0); }).observe(canvas);
+})();
+</script>
+</body>
+</html>

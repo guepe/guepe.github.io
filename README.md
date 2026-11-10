@@ -10,19 +10,25 @@
 
 Mes dépôts publics racontent un fil assez net: transformer des besoins concrets en applications sobres, maintenables et utiles au quotidien.
 
-- **Applications métier**: CRM bancaire, modules Odoo, gestion de contacts, collections et enrichissement documentaire.
-- **Automatisation pragmatique**: sauvegardes S3, extraction de recettes, export Notion, import vCard et déploiement PHP.
+- **Applications métier**: CRM bancaire, modules Odoo, thème WordPress pour unités scoutes, collections et enrichissement documentaire.
+- **Automatisation pragmatique**: sauvegardes S3, extraction de recettes, impression et export Notion, déploiement PHP.
 - **Interfaces simples**: assistants guidés, prévisualisation avant import, petites apps mobiles et vues adaptées au travail quotidien.
 
 ## Projets à mettre en avant
+
+### [Les Scouts – Unité](https://github.com/guepe/les-scouts-unite)
+
+Thème WordPress (Full Site Editing) et son extension pour les sites d'unité Les Scouts asbl : agenda des réunions, sections, staffs, inscriptions, documents et clan IAmA, modifiables par des animateurs bénévoles sans code. [Essayer en ligne](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/guepe/les-scouts-unite/main/playground/demo.json).
+
+### [printNotion](https://github.com/guepe/printNotion)
+
+Outil Rust (Typst, egui) qui imprime une page Notion en PDF A4 fidèle à Notion, bases de données comprises : filtres, tris, colonnes, groupes, calendriers et galeries.
 
 ### [Comics Collections](https://github.com/guepe/Comics-collections)
 
 Suite de modules Odoo 19 pour gérer une collection personnelle de bandes dessinées: séries, albums, auteurs, éditeurs, wishlist, état de lecture, prêts et imports. Le module optionnel `comic_datasource` enrichit les fiches depuis Google Books, Open Library, la BnF et un fallback BDGest encadré.
 
-### [partner_vcard_import](https://github.com/guepe/partner_vcard_import)
-
-Addon Odoo 19 pour importer des fichiers vCard dans Contacts via un assistant guidé. L'utilisateur charge un fichier, prévisualise les champs reconnus, puis crée ou met à jour un contact sans ressaisie manuelle.
+Modules Pro publiés par Belspace sur l'Odoo Apps Store : [Comic Shop](https://apps.odoo.com/apps/modules/19.0/comic_shop) (vente en ligne et en caisse), [Comic AI](https://apps.odoo.com/apps/modules/19.0/comic_ai) (IA pour le catalogue) et [Comic AI Shop](https://apps.odoo.com/apps/modules/19.0/comic_ai_shop) (IA pour les clients de la boutique).
 
 ### [Bank CRM](https://github.com/guepe/bank-crm2)
 
@@ -42,6 +48,8 @@ Petite app mobile statique: on pose un à trois doigts sur l'écran, une résona
 
 ## Socles et historiques
 
+- [template-unite](https://github.com/guepe/template-unite): fork du template officiel des sites d'unité Les Scouts.
+- [nihongo](https://github.com/guepe/nihongo): fork autour de l'apprentissage du japonais.
 - [odoo](https://github.com/guepe/odoo): fork servant de base de travail ERP.
 - [Magallanes](https://github.com/guepe/Magallanes): trace d'outillage de déploiement PHP.
 - [guepe.github.io](https://github.com/guepe/guepe.github.io): dépôt de cette page GitHub Pages.
